@@ -9,5 +9,13 @@ class ShipSinker:
     def make_move(self, board):
         # You get a board-object.
 
-        # Your job is to return a Position
-        return Coordinate(random.randrange(board.size()), random.randrange(board.size()))
+        for y in range(board.size()):
+            for x in range(board.size()):
+                if (self.get(board, x, y) == None):
+                    return Coordinate(x, y)
+
+    def get(self, board, x, y):
+        for shot in board.shots():
+            if (shot["coordinates"]["x"] == x and shot["coordinates"]["y"] == y):
+                return shot
+        return None
