@@ -7,7 +7,14 @@ from gameboard.coordinate import Coordinate
 class ShipSinker:
     """This is the class where all the magic happens. Given a board you should decide on a position to shoot at."""
     def make_move(self, board):
-        # You get a board-object.
+        while True:
+            x = random.randrange(board.size())
+            y = random.randrange(board.size())
+            if (not self.get(board, x, y)):
+                return Coordinate(x, y)
 
-        # Your job is to return a Position
-        return Coordinate(random.randrange(board.size()), random.randrange(board.size()))
+    def get(self, board, x, y):
+        for shot in board.shots():
+            if (shot["coordinates"]["x"] == x and shot["coordinates"]["y"] == y):
+                return shot
+        return None
