@@ -90,8 +90,31 @@ class ShipSinker:
         while True:
             x = random.randrange(board.size())
             y = random.randrange(board.size())
-            if (not self.get(board, x, y)):
+            if (not self.get(board, x, y) and self._canActuallyContainAliveShip(board, x, y)):
                 return Coordinate(x, y)
+
+    def _canActuallyContainAliveShip(self, board, x, y):
+        smallestShip = 5
+        for ship in board.ships():
+            if (smallestShip > ship["length"]):
+                smallestShip = ship["length"]
+
+        horizontal = 1 + self._findPotentialShipPositions(board, x, y, 1, 0) + self._findPotentialShipPositions(board, x, y, -1, 0)
+        vertical = 1 + self._findPotentialShipPositions(board, x, y, 0, 1) + self._findPotentialShipPositions(board, x, y, 0, -1)
+
+        return (horizontal >= smallestShip or vertical >= smallestShip)
+
+    def _findPotentialShipPositions(self, board, x, y, stepX, stepY):
+        newX = x + stepX
+        newY = y + stepY
+        positions = 0
+        while (newX >= 0 and newY >= 0
+                and newX < board.size() and newY < board.size()
+                and not self.get(board, newX, newY)):
+            positions += 1
+            newX = newX + stepX
+            newY = newY + stepY
+        return positions
 
     def get(self, board, x, y):
         for shot in board.shots():
