@@ -31,8 +31,9 @@ class ShipSinker:
                     and not (neighbourY == y and neighbourX == x)):
                     position = self.get(board, neighbourX, neighbourY)
                     if (position and position["state"] == "Seaworthy"):
-                        return self.pickNextMoveWhenWeKnowTwoSeaworthy(board, x, y, neighbourX, neighbourY)
-        
+                        nextMove = self.pickNextMoveWhenWeKnowTwoSeaworthy(board, x, y, neighbourX, neighbourY)
+                        if (nextMove):
+                            return nextMove        
         return self.pickNeighbour(board, x, y)
 
     def pickNeighbour(self, board, x, y):
@@ -55,6 +56,8 @@ class ShipSinker:
         second = self.getNextPotentialPosition(board, x1, y1, x2, y2, -1)
         if (second):
             potential.append(second)
+        if (len(potential) == 0):
+            return None
         if (random.randrange(2) == 0):
             potential.reverse()
         return potential.pop(random.randrange(len(potential)))
