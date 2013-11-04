@@ -25,4 +25,4 @@ def make_move_request():
         print "Not a json request."
         return {'error':"Not a json request"}
 
-run(host='localhost', port=port, debug=True)
+run(host='0.0.0.0', port=port, debug=True)
